@@ -1,12 +1,12 @@
 # OWSCORP Design Guidelines
 
 ## Design Approach
-**Reference-Based Approach** drawing from modern software marketplaces (Gumroad, Product Hunt, Envato Market) combined with contemporary 3D design trends featuring depth, layering, and sophisticated shadows to create a premium software marketplace experience.
+**Reference-Based Approach** inspired by the Baker template - featuring warm, professional aesthetics with clean layouts, prominent hero carousels, statistics counters, and elegant product showcases. The design emphasizes trust, quality, and approachability.
 
 ## Core Design Principles
-- **Premium Digital Commerce**: Trust-building through polished, professional aesthetics
-- **3D Depth & Layering**: Strategic use of shadows, gradients, and elevation to create dimensional hierarchy
-- **Multi-Interface Consistency**: Unified OWSCORP branding with role-specific UI adaptations
+- **Warm & Professional**: Trust-building through clean, warm color palette and elegant typography
+- **Content-Forward Design**: Large images, clear hierarchy, prominent call-to-actions
+- **Multi-Interface Consistency**: Unified OWSCORP branding with warm, welcoming aesthetics across all interfaces
 
 ---
 

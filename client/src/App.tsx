@@ -6,14 +6,17 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { useState } from "react";
 
 import Header from "@/components/Header";
-import Hero from "@/components/Hero";
 import Footer from "@/components/Footer";
+import HeroCarousel from "@/components/HeroCarousel";
+import StatsSection from "@/components/StatsSection";
+import AboutSection from "@/components/AboutSection";
+import ProductShowcase from "@/components/ProductShowcase";
+import TestimonialCarousel from "@/components/TestimonialCarousel";
+import NewsletterSection from "@/components/NewsletterSection";
 import ProductCard from "@/components/ProductCard";
-import CategoryCard from "@/components/CategoryCard";
 import AuthForm from "@/components/AuthForm";
 import AdminLogin from "@/components/AdminLogin";
 import ShoppingCartDrawer from "@/components/ShoppingCartDrawer";
-import ReviewCard from "@/components/ReviewCard";
 import AnalyticsCard from "@/components/AnalyticsCard";
 import ProductUploadForm from "@/components/ProductUploadForm";
 import DataTable from "@/components/DataTable";
@@ -21,7 +24,7 @@ import DeveloperProfile from "@/components/DeveloperProfile";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-import { Globe, Smartphone, Bot, Monitor, DollarSign, ShoppingBag, Users, TrendingUp } from "lucide-react";
+import { DollarSign, ShoppingBag, Users, TrendingUp } from "lucide-react";
 
 import webTemplateImg from "@assets/generated_images/Web_application_template_product_731777cf.png";
 import mobileAppImg from "@assets/generated_images/Mobile_app_template_product_89c05747.png";
@@ -33,7 +36,31 @@ function HomePage() {
   const [cartOpen, setCartOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   
-  const mockProducts = [
+  const showcaseProducts = [
+    {
+      id: "web",
+      title: "Web Templates",
+      description: "Professional website templates and themes for modern businesses",
+      priceRange: "$29 - $199",
+      image: webTemplateImg
+    },
+    {
+      id: "mobile",
+      title: "Mobile Apps",
+      description: "Ready-to-use mobile application templates for iOS and Android",
+      priceRange: "$49 - $299",
+      image: mobileAppImg
+    },
+    {
+      id: "ai",
+      title: "AI Agents",
+      description: "Intelligent automation solutions and AI-powered tools",
+      priceRange: "$79 - $499",
+      image: aiAgentImg
+    }
+  ];
+
+  const featuredProducts = [
     {
       id: "1",
       title: "Modern Dashboard Template",
@@ -107,13 +134,6 @@ function HomePage() {
     }
   ];
 
-  const categories = [
-    { title: "Web Templates", description: "Professional website templates and themes", icon: Globe, productCount: 245 },
-    { title: "Mobile Apps", description: "Ready-to-use mobile application templates", icon: Smartphone, productCount: 178 },
-    { title: "AI Agents", description: "Intelligent automation and AI solutions", icon: Bot, productCount: 92 },
-    { title: "Desktop Software", description: "Applications for Windows, Mac, and Linux", icon: Monitor, productCount: 134 }
-  ];
-
   return (
     <div className="min-h-screen flex flex-col">
       <Header 
@@ -124,68 +144,41 @@ function HomePage() {
       />
       
       <main className="flex-1">
-        <Hero 
-          onSearch={(query) => console.log('Search:', query)}
+        <HeroCarousel />
+        <StatsSection />
+        <AboutSection />
+        <ProductShowcase 
+          products={showcaseProducts}
+          onAddToCart={(id) => console.log('View category:', id)}
         />
 
-        <div className="max-w-7xl mx-auto px-4 py-16">
-          <div className="mb-12">
-            <h2 className="text-3xl font-bold mb-2">Browse by Category</h2>
-            <p className="text-muted-foreground">Find the perfect software solution for your needs</p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-            {categories.map((category) => (
-              <CategoryCard
-                key={category.title}
-                {...category}
-                onClick={() => console.log('Category clicked:', category.title)}
-              />
-            ))}
-          </div>
+        <div className="py-20 bg-background">
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="text-center mb-12">
+              <p className="text-primary text-lg font-semibold mb-2">// Featured Products</p>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                Top-Rated Software & Templates
+              </h2>
+              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                Discover our most popular products trusted by thousands of customers worldwide
+              </p>
+            </div>
 
-          <div className="mb-12">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h2 className="text-3xl font-bold mb-2">Featured Products</h2>
-                <p className="text-muted-foreground">Top-rated software and templates</p>
-              </div>
-              <Button variant="outline">View All</Button>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {featuredProducts.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  {...product}
+                  onAddToCart={(id) => console.log('Add to cart:', id)}
+                  onClick={(id) => console.log('View product:', id)}
+                />
+              ))}
             </div>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-            {mockProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                {...product}
-                onAddToCart={(id) => console.log('Add to cart:', id)}
-                onClick={(id) => console.log('View product:', id)}
-              />
-            ))}
-          </div>
-
-          <div className="mb-12">
-            <h2 className="text-3xl font-bold mb-6">Customer Reviews</h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <ReviewCard
-              id="1"
-              userName="Sarah Johnson"
-              rating={5}
-              date="2 days ago"
-              comment="Excellent template! Very easy to customize and the code quality is top-notch. Highly recommended for anyone looking for a professional dashboard solution."
-            />
-            <ReviewCard
-              id="2"
-              userName="Michael Chen"
-              rating={4}
-              date="1 week ago"
-              comment="Great product overall. The documentation could be more detailed, but the template itself is fantastic and saved me weeks of development time."
-            />
-          </div>
         </div>
+
+        <TestimonialCarousel />
+        <NewsletterSection onSubscribe={(email) => console.log('Subscribe:', email)} />
       </main>
 
       <Footer />
@@ -207,13 +200,13 @@ function DeveloperDashboard() {
     <div className="min-h-screen bg-background">
       <Header isLoggedIn={true} userName="John Developer" />
       
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Developer Dashboard</h1>
-          <p className="text-muted-foreground">Manage your products and track your sales</p>
+          <h1 className="text-4xl font-bold mb-2">Developer Dashboard</h1>
+          <p className="text-muted-foreground text-lg">Manage your products and track your sales</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           <AnalyticsCard
             title="Total Revenue"
             value="$12,345"
@@ -231,7 +224,7 @@ function DeveloperDashboard() {
           <AnalyticsCard
             title="Active Products"
             value="12"
-            icon={Monitor}
+            icon={ShoppingBag}
           />
           <AnalyticsCard
             title="Total Customers"
@@ -282,13 +275,13 @@ function AdminDashboard() {
     <div className="min-h-screen bg-background">
       <Header isLoggedIn={true} userName="Admin" />
       
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Admin Panel</h1>
-          <p className="text-muted-foreground">Manage users, products, and platform settings</p>
+          <h1 className="text-4xl font-bold mb-2">Admin Panel</h1>
+          <p className="text-muted-foreground text-lg">Manage users, products, and platform settings</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           <AnalyticsCard
             title="Total Revenue"
             value="$45,231"
@@ -307,7 +300,7 @@ function AdminDashboard() {
             title="Active Products"
             value="567"
             change="+7.2% from last month"
-            icon={Monitor}
+            icon={ShoppingBag}
             trend="up"
           />
           <AnalyticsCard
@@ -321,7 +314,7 @@ function AdminDashboard() {
 
         <div className="space-y-8">
           <div>
-            <h2 className="text-2xl font-bold mb-4">User Management</h2>
+            <h2 className="text-2xl font-bold mb-6">User Management</h2>
             <DataTable
               columns={userColumns}
               data={mockUsers}
