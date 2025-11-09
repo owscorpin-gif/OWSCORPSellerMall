@@ -8,6 +8,7 @@ interface HeaderProps {
   onCartClick?: () => void;
   cartItemCount?: number;
   onLoginClick?: () => void;
+  onLogoutClick?: () => void;
   isLoggedIn?: boolean;
   userName?: string;
   onMenuClick?: () => void;
@@ -17,6 +18,7 @@ export default function Header({
   onCartClick,
   cartItemCount = 0,
   onLoginClick,
+  onLogoutClick,
   isLoggedIn = false,
   userName,
   onMenuClick
@@ -81,15 +83,28 @@ export default function Header({
             </Button>
 
             {isLoggedIn ? (
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="gap-2"
-                data-testid="button-profile"
-              >
-                <User className="h-4 w-4" />
-                <span className="hidden sm:inline">{userName || "Profile"}</span>
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="gap-2"
+                  onClick={() => window.location.href = '/profile'}
+                  data-testid="button-profile"
+                >
+                  <User className="h-4 w-4" />
+                  <span className="hidden sm:inline">{userName || "Profile"}</span>
+                </Button>
+                {onLogoutClick && (
+                  <Button 
+                    variant="ghost"
+                    size="sm"
+                    onClick={onLogoutClick}
+                    data-testid="button-logout"
+                  >
+                    Logout
+                  </Button>
+                )}
+              </div>
             ) : (
               <Button 
                 onClick={onLoginClick}
