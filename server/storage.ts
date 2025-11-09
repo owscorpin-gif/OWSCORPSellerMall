@@ -4,6 +4,7 @@ import * as schema from "@shared/schema";
 import type {
   User,
   InsertUser,
+  UpsertUser,
   SellerProfile,
   InsertSellerProfile,
   Category,
@@ -26,6 +27,7 @@ export interface IStorage {
   // Users
   getUser(id: string): Promise<User | undefined>;
   getUserByEmail(email: string): Promise<User | undefined>;
+  upsertUser(user: UpsertUser): Promise<User>;
   createUser(user: InsertUser): Promise<User>;
   updateUser(id: string, user: Partial<InsertUser>): Promise<User | undefined>;
   getAllUsers(): Promise<User[]>;
@@ -91,13 +93,28 @@ export class DatabaseStorage implements IStorage {
     return result[0];
   }
 
+  async upsertUser(userData: UpsertUser): Promise<User> {
+    const [user] = await db
+      .insert(schema.users)
+      .values(userData)
+      .onConflictDoUpdate({
+        target: schema.users.id,
+        set: {
+          ...userData,
+          updatedAt: new Date(),
+        },
+      })
+      .returning();
+    return user;
+  }
+
   async createUser(user: InsertUser): Promise<User> {
     const result = await db.insert(schema.users).values(user).returning();
     return result[0];
   }
 
   async updateUser(id: string, user: Partial<InsertUser>): Promise<User | undefined> {
-    const result = await db.update(schema.users).set(user).where(eq(schema.users.id, id)).returning();
+    const result = await db.update(schema.users).set({ ...user, updatedAt: new Date() }).where(eq(schema.users.id, id)).returning();
     return result[0];
   }
 
